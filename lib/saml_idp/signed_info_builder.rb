@@ -70,7 +70,7 @@ module SamlIdp
     private :secret_key
 
     def password
-      SamlIdp.config.password
+      SamlIdp.config.password.is_a?(Proc) ? SamlIdp.config.password.call : SamlIdp.config.password
     end
     private :password
 
