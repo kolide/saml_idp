@@ -7,6 +7,8 @@ module SamlIdp
 
     def self.digest_sha_class(sha_size)
       case sha_size
+      when :sha1
+        Digest::SHA1
       when :sha256
         Digest::SHA256
       when :sha512
