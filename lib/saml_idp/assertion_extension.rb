@@ -15,11 +15,18 @@ module SamlIdp
       self.extension_point = extension_point
     end
 
-    # Subclasses must implement build(context). The context is a Builder block for
-    # either SubjectConfirmation (for SubjectConfirmationData) or AuthnContext (for AuthnContextDecl).
+    # Subclasses must implement build(context). Both extension points are additive:
+    # standard SAML elements are always emitted, and the extension adds content
+    # inside them.
     #
-    # For SUBJECT_CONFIRMATION_DATA: emit SubjectConfirmationData with standard attributes
-    # (NotOnOrAfter, Recipient, InResponseTo when using bearer) and add custom elements inside it.
+    # For SUBJECT_CONFIRMATION_DATA: The standard SubjectConfirmationData element
+    # with NotOnOrAfter, Recipient, and InResponseTo attributes is always emitted.
+    # The extension receives the SubjectConfirmationData builder to add custom
+    # child elements inside it.
+    #
+    # For AUTHN_CONTEXT_DECL: The standard AuthnContextClassRef is always emitted.
+    # The extension receives the AuthnContext builder to add AuthnContextDecl or
+    # other child elements alongside it.
     #
     # Example (AuthnContextDecl extension):
     #

@@ -87,10 +87,10 @@ module SamlIdp
               confirmation_hash[:InResponseTo] = saml_request_id unless saml_request_id.nil?
               confirmation_hash[:NotOnOrAfter] = not_on_or_after_subject
               confirmation_hash[:Recipient] = saml_acs_url
-              if assertion_extension.present? && assertion_extension.extension_point == AssertionExtension::SUBJECT_CONFIRMATION_DATA_EXTENSION_POINT
-                assertion_extension.build confirmation
-              else
-                confirmation.SubjectConfirmationData "", confirmation_hash
+              confirmation.SubjectConfirmationData confirmation_hash do |confirmation_data|
+                if assertion_extension.present? && assertion_extension.extension_point == AssertionExtension::SUBJECT_CONFIRMATION_DATA_EXTENSION_POINT
+                  assertion_extension.build confirmation_data
+                end
               end
             end
           end
